@@ -20,30 +20,30 @@ public class DoublyLinkedList{
         return cur.value;
     }
 
+    private Node getTail() {
+        Node cur = head;
+        while (cur != null && cur.next != null) {
+            cur = cur.next;
+        }
+        return cur;
+    }
     public void addAtHead(int value){
         Node newNode= new Node(value);
-        if(head == null){
-            head= newNode;
-            tail= newNode;
-        }else{
-            newNode.prev= null;
-            newNode.next= head;
-            head= newNode;
-        }
+        newNode.next= head;
+        if(head != null)    head.prev= newNode;
+        head= newNode;
         size++;
     }
 
     public void addAtTail(int value){
-        Node newNode= new Node(value);
-        if(head == null || tail == null){
-            head= newNode;
-            tail= newNode;
-        }else{
-            Node cur= tail;
-            cur.next= newNode;
-            newNode.prev= tail;
-            tail= newNode;
+        Node newNode = new Node(value);
+        if (head == null) {
+            addAtHead(value);
+            return;
         }
+        Node prev = getTail();
+        prev.next = newNode;
+        newNode.prev = prev;
         size++;
     }
 
@@ -59,10 +59,12 @@ public class DoublyLinkedList{
         }
 
         Node prev= head;
-        Node next= prev.next;
-        newNode.prev= prev;
+        Node temp= prev.next;
+        Node next= temp;
+       // newNode.prev= prev;
         newNode.next= next;
-        prev.next= newNode;
+        temp= newNode;
+        if(next != null)    next.prev= newNode;
         size++;
     }
 
@@ -96,14 +98,13 @@ public class DoublyLinkedList{
         System.out.print("null");
         System.out.println();
     }
+
     public static void main(String[] args) {
         DoublyLinkedList dll= new DoublyLinkedList();
-        dll.addAtHead(1);
-        dll.addAtTail(5);
         dll.addAtTail(0);
         dll.addAtHead(-1);
-        dll.deleteAtIndex(2);
-       // dll.addAtIndex(3,4);
+        dll.deleteAtIndex(0);
+        dll.addAtIndex(1,4);
         dll.showLinkedList();
     }
 }
